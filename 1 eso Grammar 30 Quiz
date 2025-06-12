@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Gramática de 1º ESO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .quiz-option {
+            border: 2px solid #cbd5e1; /* slate-300 */
+            transition: all 0.2s ease-in-out;
+        }
+        .quiz-option:hover {
+            background-color: #f0f4f8; /* slate-100 */
+        }
+        .quiz-option.selected {
+            background-color: #e0f2fe; /* sky-100 */
+            border-color: #0284c7; /* sky-600 */
+        }
+        .quiz-option.correct {
+            background-color: #d1fae5; /* green-100 */
+            border-color: #10b981; /* green-500 */
+            color: #065f46; /* green-800 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+            color: #991b1b; /* red-800 */
+        }
+        .feedback-text.correct {
+            color: #10b981; /* green-500 */
+        }
+        .feedback-text.incorrect {
+            color: #ef4444; /* red-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-xl md:text-2xl font-bold text-sky-700 text-center">Cuestionario de Gramática de 1º ESO</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Pon a prueba tus conocimientos!</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                Responde las siguientes preguntas sobre los temas clave de gramática de inglés. ¡Buena suerte!
+            </p>
+        </section>
+
+        <section id="quiz-section" class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+            <div class="mb-6 text-xl font-semibold text-sky-700">
+                Puntuación: <span id="score">0</span> / <span id="total-questions">0</span>
+            </div>
+
+            <div id="questions-container" class="space-y-10">
+                </div>
+
+            <div id="quiz-results" class="mt-10 p-6 bg-sky-50 rounded-lg text-center hidden">
+                <h3 class="text-2xl font-bold text-sky-800 mb-4">Cuestionario Completado</h3>
+                <p class="text-xl">Tu puntuación final es: <span class="font-bold text-sky-700 text-3xl" id="final-score">0</span> de <span class="font-bold text-sky-700 text-3xl" id="final-total">0</span></p>
+                <button id="restart-quiz-btn" class="mt-6 bg-sky-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-sky-700 transition">
+                    Reiniciar Cuestionario
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 Cuestionario de Gramática. ¡Sigue aprendiendo!</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questions = [
+                // 1. Presente Simple (5 preguntas)
+                {
+                    question: "Completa la frase: 'She ____ (study) English every day.'",
+                    options: ["study", "studies", "studying"],
+                    correctAnswer: "studies",
+                    topic: "Presente Simple"
+                },
+                {
+                    question: "Completa la frase: 'I often ____ (watch) TV in the evening.'",
+                    options: ["watch", "watches", "watching"],
+                    correctAnswer: "watch",
+                    topic: "Presente Simple"
+                },
+                {
+                    question: "Completa la frase: 'He ____ (not like) broccoli.'",
+                    options: ["don't like", "doesn't like", "not like"],
+                    correctAnswer: "doesn't like",
+                    topic: "Presente Simple"
+                },
+                {
+                    question: "Completa la frase: 'We ____ (go) to school by bus.'",
+                    options: ["goes", "go", "going"],
+                    correctAnswer: "go",
+                    topic: "Presente Simple"
+                },
+                {
+                    question: "Completa la frase: 'The sun ____ (set) in the West.'",
+                    options: ["set", "sets", "setting"],
+                    correctAnswer: "sets",
+                    topic: "Presente Simple"
+                },
+                // 2. Presente Continuo (5 preguntas)
+                {
+                    question: "Completa la frase: 'They ____ (play) football right now.'",
+                    options: ["is playing", "are playing", "play"],
+                    correctAnswer: "are playing",
+                    topic: "Presente Continuo"
+                },
+                {
+                    question: "Completa la frase: 'Listen! He ____ (sing) a beautiful song.'",
+                    options: ["is singing", "sings", "singing"],
+                    correctAnswer: "is singing",
+                    topic: "Presente Continuo"
+                },
+                {
+                    question: "Completa la frase: 'I ____ (write) an email at the moment.'",
+                    options: ["am writing", "is writing", "write"],
+                    correctAnswer: "am writing",
+                    topic: "Presente Continuo"
+                },
+                {
+                    question: "Completa la frase: 'Look! The cat ____ (sleep) on the sofa.'",
+                    options: ["sleeps", "is sleeping", "are sleeping"],
+                    correctAnswer: "is sleeping",
+                    topic: "Presente Continuo"
+                },
+                {
+                    question: "Completa la frase: 'We ____ (not do) our homework now.'",
+                    options: ["are not doing", "do not doing", "is not doing"],
+                    correctAnswer: "are not doing",
+                    topic: "Presente Continuo"
+                },
+                // 3. Pasado Simple (5 preguntas)
+                {
+                    question: "Completa la frase: 'Yesterday, I ____ (go) to the park.'",
+                    options: ["go", "goes", "went"],
+                    correctAnswer: "went",
+                    topic: "Pasado Simple"
+                },
+                {
+                    question: "Completa la frase: 'She ____ (finish) her homework last night.'",
+                    options: ["finished", "finishes", "finish"],
+                    correctAnswer: "finished",
+                    topic: "Pasado Simple"
+                },
+                {
+                    question: "Completa la frase: 'They ____ (eat) pizza two days ago.'",
+                    options: ["eat", "ate", "eaten"],
+                    correctAnswer: "ate",
+                    topic: "Pasado Simple"
+                },
+                {
+                    question: "Completa la frase: 'My dad ____ (buy) a new car last month.'",
+                    options: ["buy", "bought", "buyed"],
+                    correctAnswer: "bought",
+                    topic: "Pasado Simple"
+                },
+                {
+                    question: "Completa la frase: 'We ____ (visit) London last summer.'",
+                    options: ["visit", "visited", "visiting"],
+                    correctAnswer: "visited",
+                    topic: "Pasado Simple"
+                },
+                // 4. Futuro (will / be going to) (5 preguntas)
+                {
+                    question: "Elige la opción correcta: 'I think it ____ rain tomorrow. (Predicción general)'",
+                    options: ["is going to", "will", "am going to"],
+                    correctAnswer: "will",
+                    topic: "Futuro"
+                },
+                {
+                    question: "Elige la opción correcta: 'I have tickets. I ____ visit my grandma next week. (Plan decidido)'",
+                    options: ["will", "am going to", "go to"],
+                    correctAnswer: "am going to",
+                    topic: "Futuro"
+                },
+                {
+                    question: "Elige la opción correcta: 'Oh no, I dropped my pen! I ____ pick it up. (Decisión espontánea)'",
+                    options: ["am going to", "will", "might"],
+                    correctAnswer: "will",
+                    topic: "Futuro"
+                },
+                {
+                    question: "Elige la opción correcta: 'Look at the time! We ____ be late. (Predicción basada en evidencia)'",
+                    options: ["will", "are going to", "should"],
+                    correctAnswer: "are going to",
+                    topic: "Futuro"
+                },
+                 {
+                    question: "Elige la opción correcta: 'My sister ____ celebrate her birthday next month. (Plan fijo)'",
+                    options: ["will", "is going to", "can"],
+                    correctAnswer: "is going to",
+                    topic: "Futuro"
+                },
+                // 5. Verbos Modales (5 preguntas)
+                {
+                    question: "Elige el modal correcto: 'You ____ listen to your teacher. (Consejo)'",
+                    options: ["can", "must", "should"],
+                    correctAnswer: "should",
+                    topic: "Modales"
+                },
+                {
+                    question: "Elige el modal correcto: 'I ____ speak English very well. (Habilidad)'",
+                    options: ["must", "can", "should"],
+                    correctAnswer: "can",
+                    topic: "Modales"
+                },
+                {
+                    question: "Elige el modal correcto: 'You ____ not make noise in the hospital. (Obligación / Prohibición)'",
+                    options: ["can", "should", "must"],
+                    correctAnswer: "must",
+                    topic: "Modales"
+                },
+                {
+                    question: "Elige el modal correcto: 'It ____ be cold tonight. (Posibilidad)'",
+                    options: ["can", "should", "may"],
+                    correctAnswer: "may",
+                    topic: "Modales"
+                },
+                 {
+                    question: "Elige el modal correcto: 'We ____ help clean the classroom. (Consejo/Recomendación)'",
+                    options: ["must", "should", "can"],
+                    correctAnswer: "should",
+                    topic: "Modales"
+                },
+                // 6. Comparativos y Superlativos (3 preguntas)
+                {
+                    question: "Completa la frase: 'My house is ____ than yours. (big)'",
+                    options: ["big", "bigger", "biggest"],
+                    correctAnswer: "bigger",
+                    topic: "Comparativos/Superlativos"
+                },
+                {
+                    question: "Completa la frase: 'This is the ____ book I've ever read. (interesting)'",
+                    options: ["most interesting", "more interesting", "interestingest"],
+                    correctAnswer: "most interesting",
+                    topic: "Comparativos/Superlativos"
+                },
+                {
+                    question: "Completa la frase: 'He is ____ boy in the class. (tall)'",
+                    options: ["taller", "the tallest", "tallest"],
+                    correctAnswer: "the tallest",
+                    topic: "Comparativos/Superlativos"
+                },
+                // 7. There was / There were (2 preguntas)
+                {
+                    question: "Completa la frase: '____ a cat in the garden yesterday.'",
+                    options: ["There was", "There were", "There is"],
+                    correctAnswer: "There was",
+                    topic: "There was/were"
+                },
+                {
+                    question: "Completa la frase: '____ many people at the party last night.'",
+                    options: ["There was", "There were", "There are"],
+                    correctAnswer: "There were",
+                    topic: "There was/were"
+                }
+            ];
+
+            const questionsContainer = document.getElementById('questions-container');
+            const scoreSpan = document.getElementById('score');
+            const totalQuestionsSpan = document.getElementById('total-questions');
+            const quizResultsDiv = document.getElementById('quiz-results');
+            const finalScoreSpan = document.getElementById('final-score');
+            const finalTotalSpan = document.getElementById('final-total');
+            const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+            let currentScore = 0;
+            totalQuestionsSpan.textContent = questions.length;
+
+            function loadQuiz() {
+                questionsContainer.innerHTML = ''; // Clear previous questions
+                currentScore = 0;
+                scoreSpan.textContent = currentScore;
+                quizResultsDiv.classList.add('hidden'); // Hide results div
+
+                questions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('bg-slate-100', 'p-6', 'rounded-lg', 'shadow-md');
+                    questionDiv.innerHTML = `
+                        <p class="text-lg font-medium mb-4"><strong>${index + 1}. (${q.topic})</strong> ${q.question}</p>
+                        <div class="options-container space-y-3">
+                            ${q.options.map(option => `
+                                <button class="quiz-option w-full p-3 rounded-lg text-left font-semibold text-slate-700 bg-white hover:bg-slate-50 transition duration-150" data-answer="${option}">
+                                    ${option}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <p class="feedback-text mt-3 text-sm font-medium h-5"></p>
+                    `;
+                    questionsContainer.appendChild(questionDiv);
+
+                    const optionButtons = questionDiv.querySelectorAll('.quiz-option');
+                    optionButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            // First, remove 'selected' from all options for this question
+                            optionButtons.forEach(btn => {
+                                btn.classList.remove('selected');
+                            });
+                            // Then, add 'selected' to the clicked button
+                            button.classList.add('selected');
+                        });
+                    });
+
+                    const checkButton = document.createElement('button');
+                    checkButton.textContent = 'Comprobar';
+                    checkButton.classList.add('mt-4', 'bg-sky-600', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded-lg', 'hover:bg-sky-700', 'transition');
+                    questionDiv.appendChild(checkButton);
+
+                    checkButton.addEventListener('click', () => {
+                        const selectedOption = questionDiv.querySelector('.quiz-option.selected');
+                        const feedbackText = questionDiv.querySelector('.feedback-text');
+
+                        if (!selectedOption) {
+                            feedbackText.textContent = 'Por favor, selecciona una opción.';
+                            feedbackText.classList.remove('feedback-correct', 'feedback-incorrect');
+                            return;
+                        }
+
+                        // Disable all options and the check button for this question after checking
+                        optionButtons.forEach(btn => btn.disabled = true);
+                        checkButton.disabled = true;
+
+                        if (selectedOption.dataset.answer === q.correctAnswer) {
+                            selectedOption.classList.add('correct');
+                            feedbackText.textContent = '¡Correcto!';
+                            feedbackText.classList.add('feedback-correct');
+                            feedbackText.classList.remove('feedback-incorrect');
+                            currentScore++;
+                        } else {
+                            selectedOption.classList.add('incorrect');
+                            feedbackText.textContent = `Incorrecto. La respuesta correcta era: "${q.correctAnswer}"`;
+                            feedbackText.classList.add('feedback-incorrect');
+                            feedbackText.classList.remove('feedback-correct');
+                            // Highlight the correct answer if it's not the selected one
+                            optionButtons.forEach(btn => {
+                                if (btn.dataset.answer === q.correctAnswer) {
+                                    btn.classList.add('correct');
+                                }
+                            });
+                        }
+                        scoreSpan.textContent = currentScore; // Update score display
+
+                        // Check if all questions are answered
+                        const allQuestionsAnswered = Array.from(questionsContainer.children).every(qDiv => 
+                            qDiv.querySelector('button[disabled]') // Check if the check button for this question is disabled (meaning it's answered)
+                        );
+                        if (allQuestionsAnswered) {
+                            showResults();
+                        }
+                    });
+                });
+            }
+
+            function showResults() {
+                finalScoreSpan.textContent = currentScore;
+                finalTotalSpan.textContent = questions.length;
+                quizResultsDiv.classList.remove('hidden');
+                // Scroll to results
+                quizResultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            restartQuizBtn.addEventListener('click', loadQuiz);
+
+            // Initial load
+            loadQuiz();
+        });
+    </script>
+</body>
+</html>
